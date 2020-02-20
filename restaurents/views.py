@@ -17,3 +17,9 @@ def about(request):
 
 def contact(request):
     return render(request, 'home/contact.html', {})
+
+
+class ContactView(View):
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, 'home/contact.html', context)
