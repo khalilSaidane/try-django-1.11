@@ -5,14 +5,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
 from django.views import generic
+from .models import Restaurant
 
 
-class HomeView(generic.TemplateView):
-    template_name = 'home/home.html'
-    
-    def get_context_data(self, *args, **kwargs):
-        context = super(HomeView, self).get_context_data(*args, **kwargs)
-        context = {
-            'data': 'I am some data'
-        }
-        return context
+def restaurants_listview(request):
+    template_name = 'restaurants/restaurants_list.html'
+    queryset = Restaurant.objects.all()
+    context = {
+        'object_list': queryset
+    }
+    return render(request, template_name, context)
