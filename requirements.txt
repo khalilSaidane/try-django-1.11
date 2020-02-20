@@ -2,3 +2,4 @@ Django==1.11
 psycopg2>=2.7,<3.0
 django-crispy-forms
 pillow
+django-bootstrap3==9

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome | {% block title %}{% endblock %}</title>
+{% load bootstrap3 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+</head>
+<body>
+{% include 'snippets/navbar.html' %}
+{% block content %}
+
+{% endblock %}
+</body>
+</html>
