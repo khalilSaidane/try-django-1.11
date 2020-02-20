@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from restaurents import views
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^home/', views.home, name='home'),
-    url(r'^about/', views.about, name='about'),
-    url(r'^contact/', views.ContactView.as_view(), name='contact'),
-
+    url(r'^home/', views.HomeView.as_view(), name='home'),
+    url(r'^about/', TemplateView.as_view(template_name='home/about.html'), name='about'),
+    url(r'^contact/', TemplateView.as_view(template_name='home/contact.html'), name='contact'),
 ]

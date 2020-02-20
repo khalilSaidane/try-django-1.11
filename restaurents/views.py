@@ -4,22 +4,15 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
+from django.views import generic
 
 
-# Create your views here.
-def home(request):
-    return render(request, 'home/home.html', {})
-
-
-def about(request):
-    return render(request, 'home/about.html', {})
-
-
-def contact(request):
-    return render(request, 'home/contact.html', {})
-
-
-class ContactView(View):
-    def get(self, request, *args, **kwargs):
-        context = {}
-        return render(request, 'home/contact.html', context)
+class HomeView(generic.TemplateView):
+    template_name = 'home/home.html'
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(HomeView, self).get_context_data(*args, **kwargs)
+        context = {
+            'data': 'I am some data'
+        }
+        return context
