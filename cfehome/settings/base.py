@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
-    'restaurents'
+    'restaurents',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'cfehome.urls'
+LOGIN_URL = 'accounts/login/'
+LOGIN_REDIRECT_URL = '/restaurants/'
+LOGOUT_REDIRECT_URL = 'accounts/login/'
 
 TEMPLATES = [
     {

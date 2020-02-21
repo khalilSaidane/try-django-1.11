@@ -8,9 +8,10 @@ from django.views.generic import ListView, DetailView
 from .models import Restaurant
 from django.db.models import Q
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class RestaurantCreateView(generic.CreateView):
+class RestaurantCreateView(LoginRequiredMixin, generic.CreateView):
     model = Restaurant
     fields = [
         'name',
