@@ -7,7 +7,6 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from .models import Restaurant
 from django.db.models import Q
-from .forms import RestaurantForm
 from django.views import generic
 
 
@@ -20,6 +19,11 @@ class RestaurantCreateView(generic.CreateView):
         ]
     template_name = 'restaurants/form.html'
     success_url = '/restaurants'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        return super(RestaurantCreateView, self).form_valid(form)
 
 
 def restaurants_listview(request):

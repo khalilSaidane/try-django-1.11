@@ -4,9 +4,13 @@ from __future__ import unicode_literals
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 from .utils import unique_slug_generator
+from .validators import validate_name
+from django.conf import settings
+
 
 class Restaurant(models.Model):
-    name = models.CharField(max_length=100)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=100, validators=[validate_name])
     location = models.CharField(max_length=100, blank=True, null=True)
     category = models.CharField(max_length=100, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
