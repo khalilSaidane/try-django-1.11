@@ -18,7 +18,7 @@ class UserLoginView(LoginView):
 
 class ChangePasswordView(PasswordChangeView):
     template_name = 'accounts/change-password.html'
-    success_url = '/blog'
+    success_url = '/restaurants'
 
 
 
