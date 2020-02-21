@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^home/', TemplateView.as_view(template_name='home/home.html'), name='home'),
     url(r'^restaurants/$', views.RestaurantListView.as_view(), name='restaurants_listview'),
-    url(r'^restaurants/(?P<rest_id>\w+)/$', views.RestaurantDetailView.as_view(), name='restaurants_detail'),
+    url(r'^restaurants/(?P<slug>[\w-]+)/$', views.RestaurantDetailView.as_view(), name='restaurants_detail'),
     url(r'^about/', TemplateView.as_view(template_name='home/about.html'), name='about'),
     url(r'^contact/', TemplateView.as_view(template_name='home/contact.html'), name='contact'),
 ]
