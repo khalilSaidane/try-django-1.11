@@ -7,6 +7,19 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from .models import Restaurant
 from django.db.models import Q
+from .forms import RestaurantForm
+from django.views import generic
+
+
+class RestaurantCreateView(generic.CreateView):
+    model = Restaurant
+    fields = [
+        'name',
+        'location',
+        'category'
+        ]
+    template_name = 'restaurants/form.html'
+    success_url = '/restaurants'
 
 
 def restaurants_listview(request):
@@ -21,6 +34,7 @@ def restaurants_listview(request):
 class RestaurantListView(ListView):
     template_name = 'restaurants/restaurants_list.html'
     queryset = Restaurant.objects.all()
+
     def get_queryset(self):
         print(self.kwargs)
         slug = self.kwargs.get('slug')
@@ -34,4 +48,3 @@ class RestaurantListView(ListView):
 class RestaurantDetailView(DetailView):
     queryset = Restaurant.objects.all()
     template_name = 'restaurants/restaurants_detail.html'
-
