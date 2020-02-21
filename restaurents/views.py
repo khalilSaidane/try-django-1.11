@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
-from django.views import generic
+from django.views.generic import ListView, DetailView
 from .models import Restaurant
+from django.db.models import Q
 
 
 def restaurants_listview(request):
@@ -15,3 +16,26 @@ def restaurants_listview(request):
         'object_list': queryset
     }
     return render(request, template_name, context)
+
+
+class RestaurantListView(ListView):
+    template_name = 'restaurants/restaurants_list.html'
+    queryset = Restaurant.objects.all()
+    def get_queryset(self):
+        print(self.kwargs)
+        slug = self.kwargs.get('slug')
+        if slug:
+            queryset = Restaurant.objects.filter(category__icontains=slug)
+        else:
+            queryset = Restaurant.objects.all()
+        return queryset
+
+
+class RestaurantDetailView(DetailView):
+    queryset = Restaurant.objects.all()
+    template_name = 'restaurants/restaurants_detail.html'
+
+    def get_object(self,*args, **kwargs):
+        rest_id = self.kwargs.get('rest_id')
+        obj = get_object_or_404(Restaurant, id=rest_id)
+        return obj
