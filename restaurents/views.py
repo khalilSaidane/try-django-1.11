@@ -19,7 +19,6 @@ class RestaurantCreateView(LoginRequiredMixin, generic.CreateView):
         'category'
         ]
     template_name = 'restaurants/form.html'
-    success_url = '/restaurants'
 
     def form_valid(self, form):
         instance = form.save(commit=False)
@@ -27,21 +26,11 @@ class RestaurantCreateView(LoginRequiredMixin, generic.CreateView):
         return super(RestaurantCreateView, self).form_valid(form)
 
 
-def restaurants_listview(request):
-    template_name = 'restaurants/restaurants_list.html'
-    queryset = Restaurant.objects.all()
-    context = {
-        'object_list': queryset
-    }
-    return render(request, template_name, context)
-
-
-class RestaurantListView(ListView):
+class RestaurantListView(LoginRequiredMixin, ListView):
     template_name = 'restaurants/restaurants_list.html'
     queryset = Restaurant.objects.all()
 
     def get_queryset(self):
-        print(self.kwargs)
         slug = self.kwargs.get('slug')
         if slug:
             queryset = Restaurant.objects.filter(category__icontains=slug)

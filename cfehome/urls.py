@@ -15,16 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from restaurents import views
 from django.views.generic import TemplateView
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^home/', TemplateView.as_view(template_name='home/home.html'), name='home'),
-    url(r'^restaurants/$', views.RestaurantListView.as_view(), name='restaurants_list'),
-    url(r'^restaurants/create$', views.RestaurantCreateView.as_view(), name='restaurant_create'),
-    url(r'^restaurants/(?P<slug>[\w-]+)/$', views.RestaurantDetailView.as_view(), name='restaurants_detail'),
+    url(r'^restaurants/', include('restaurents.urls', namespace='restaurants')),
+    url(r'^accounts/', include('accounts.urls')),
     url(r'^about/', TemplateView.as_view(template_name='home/about.html'), name='about'),
     url(r'^contact/', TemplateView.as_view(template_name='home/contact.html'), name='contact'),
-    url(r'^accounts/', include('accounts.urls'))
+    url(r'^home/', TemplateView.as_view(template_name='home/home.html'), name='home'),
 ]
