@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
-{% block title %} Create {% endblock %}
+{% block title %} {{ title }} {% endblock %}
 
 {% load bootstrap3 %}
 {% block content %}
-    {% bootstrap_messages %}
-    <h1 class="m-2">Add Restaurant:</h1>
-    <form action="{% url 'restaurant_create' %}" method="post" enctype="multipart/form-data">
+    <h5 class="card-title text-center">{{ title }}</h5>
+    <form method="post" class="form" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
             <button type="submit" class="btn btn-primary">
-                {% bootstrap_icon "plus" %} Submit
+                Submit
             </button>
         {% endbuttons %}
     </form>

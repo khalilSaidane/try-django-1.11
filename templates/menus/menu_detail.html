@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %} Menus {% endblock %}
+{% block content %}
+    <h1>Menu Detail</h1>
+    <h2>{{ object.name }} <small>{{ object.restaurant }}</small></h2>
+    {% if object.contents %}
+        Contents
+        <ul>
+            {% for content in object.get_contents %}
+                <li>
+                    {{ content }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if object.excludes %}
+        Excludes
+        <ul>
+            {% for exclude in object.get_excludes %}
+                <li>
+                    {{ exclude }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}    <p>{{ object.timestamp }} updated{{ object.updated | timesince }} ago</p>
+{% endblock %}

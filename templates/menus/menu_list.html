@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %} Menus {% endblock %}
+{% block content %}
+    <h1>Menu list</h1>
+    <ul>
+        {% for obj in object_list %}
+            <li><a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a> |
+                <a href="{{ obj.restaurant.get_absolute_url }}">{{ obj.restaurant }}</a> <br>
+                {% if obj.contents %}
+                    Contents
+                    <ul>
+                        {% for content in obj.get_contents %}
+                            <li>
+                                {{ content }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if obj.excludes %}
+                    Excludes
+                    <ul>
+                        {% for exclude in obj.get_excludes %}
+                            <li>
+                                {{ exclude }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {{ obj.timestamp }} |
+                {{ obj.updated }} |
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
