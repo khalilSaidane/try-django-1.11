@@ -8,5 +8,6 @@ class RestaurantForm(forms.ModelForm):
         fields = [
             'name',
             'location',
-            'category'
+            'category',
+            'slug',
         ]

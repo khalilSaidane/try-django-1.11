@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block title %} Menus {% endblock %}
 {% block content %}
-    <h1>Menu list</h1>
+    <h1>My Menus</h1>
     <ul>
         {% for obj in object_list %}
             <li><a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a> |
-                <a href="{{ obj.restaurant.get_absolute_url }}">{{ obj.restaurant }}</a> <br>
+                <small><a href="{{ obj.restaurant.get_absolute_url }}">{{ obj.restaurant }}</a></small> <br>
                 {% if obj.contents %}
                     Contents
                     <ul>
@@ -27,7 +27,7 @@
                     </ul>
                 {% endif %}
                 {{ obj.timestamp }} |
-                {{ obj.updated }} |
+                {{ obj.updated }}
             </li>
         {% endfor %}
     </ul>

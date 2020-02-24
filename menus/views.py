@@ -43,9 +43,10 @@ class MenuCreateView(LoginRequiredMixin, generic.CreateView):
         return kwargs
 
 
-class MenuUpdateView(LoginRequiredMixin, generic.UpdateView):
+class MenuUpdateView(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
     form_class = MenuForm
-    template_name = 'form.html'
+    template_name = 'menus/detail-update.html'
+    success_message = "Menu %(name)s is successfully updated"
 
     def get_queryset(self):
         return Menu.objects.filter(user=self.request.user)

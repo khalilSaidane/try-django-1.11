@@ -37,15 +37,16 @@ class RestaurantListView(LoginRequiredMixin, ListView):
 
 
 class RestaurantDetailView(LoginRequiredMixin, DetailView):
-    template_name = 'restaurants/restaurants_detail.html'
+    template_name = 'restaurants/detail-update.html'
 
     def get_queryset(self):
         return Restaurant.objects.filter(user=self.request.user)
 
 
-class RestaurantUpdateView(LoginRequiredMixin, UpdateView):
-    template_name = 'form.html'
+class RestaurantUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    template_name = 'restaurants/detail-update.html'
     form_class = RestaurantForm
+    success_message = "Restaurant %(name)s is successfully updated"
 
     def get_queryset(self):
         return Restaurant.objects.filter(user=self.request.user)
