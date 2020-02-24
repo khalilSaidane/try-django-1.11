@@ -2,23 +2,28 @@
 {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
     <h1>{{ user.username }}</h1>
-    {% if user.restaurant_set.all.exists %}
-        <ul>
-            {% for rest in user.restaurant_set.all %}
-                <li>
-                    <b> {{ rest }} </b>| {{ rest.location }}
-                    <ul>
-                        {% for menu in rest.menu_set.all %}
-                            <li>{{ menu.name }}</li>
-                            {% for ing in menu.get_contents %}
-                                <span style="background-color: lightgrey">{{ ing }}</span>
-                            {% endfor %}
-                        {% endfor %}
-                    </ul>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p class="lead">No Items Found</p>
+        {% if restaurants %}
+            <ul>
+                {% for rest in restaurants %}
+                    <div class="row">
+                        <div>
+                            <div class="thumbnail">
+                                <h3> {{ rest }} </h3>
+                                <p>{{ rest.location }}</p>
+                                <ul>
+                                    {% for menu in rest.menu_set.all %}
+                                        <li><b>{{ menu.name }}</b></li>
+                                        {% for ing in menu.get_contents %}
+                                            <span class="badge badge-default">{{ ing }}</span>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="lead">No Items Found</p>
     {% endif %}
 {% endblock %}
