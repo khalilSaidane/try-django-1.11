@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'bootstrap3',
     'restaurents',
     'accounts',
-    'menus'
+    'menus',
+    'profiles'
 ]
 
 MIDDLEWARE = [

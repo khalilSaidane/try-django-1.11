@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% block title %} Menus {% endblock %}
 {% block content %}
-    <h1>My Menus</h1>
+    <h1>My Menus
+        <small>
+            <a href="{% url 'menus:create' %}">Add</a>
+        </small>
+    </h1>
+
     <ul>
         {% for obj in object_list %}
             <li><a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a> |
@@ -29,6 +34,10 @@
                 {{ obj.timestamp }} |
                 {{ obj.updated }}
             </li>
+        {% empty %}
+            <small>
+                <a href="{% url 'menus:create' %}">Add</a>
+            </small>
         {% endfor %}
     </ul>
 {% endblock %}

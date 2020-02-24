@@ -9,12 +9,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 
-class MenuListView(generic.ListView):
+class MenuListView(LoginRequiredMixin,  generic.ListView):
     def get_queryset(self):
         return Menu.objects.filter(user=self.request.user)
 
 
-class MenuDetailView(generic.DetailView):
+class MenuDetailView(LoginRequiredMixin, generic.DetailView):
     def get_queryset(self):
         return Menu.objects.filter(user=self.request.user)
 
