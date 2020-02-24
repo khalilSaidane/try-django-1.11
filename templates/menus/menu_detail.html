@@ -2,7 +2,7 @@
 {% block title %} Menus {% endblock %}
 {% block content %}
     <h1>Menu Detail</h1>
-    <h2>{{ object.name }} <small>{{ object.restaurant }}</small></h2>
+    <h2>{{ object.name }} <small><a href="{{object.restaurant.get_absolute_url}}">{{ object.restaurant }}</a></small></h2>
     {% if object.contents %}
         Contents
         <ul>

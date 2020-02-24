@@ -5,6 +5,8 @@ from django.shortcuts import render
 from .models import Menu
 from django.views import generic
 from .forms import MenuForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 class MenuListView(generic.ListView):
@@ -17,7 +19,7 @@ class MenuDetailView(generic.DetailView):
         return Menu.objects.filter(user=self.request.user)
 
 
-class MenuCreateView(generic.CreateView):
+class MenuCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = MenuForm
     template_name = 'form.html'
 
@@ -34,9 +36,16 @@ class MenuCreateView(generic.CreateView):
         context['title'] = 'Add Menu'
         return context
 
+    # The user argument will be sent to the form to ensure that the list of restaurants available are the ones that he created
+    def get_form_kwargs(self):
+        kwargs = super(MenuCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
-class MenuUpdateView(generic.UpdateView):
+
+class MenuUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = MenuForm
+    template_name = 'form.html'
 
     def get_queryset(self):
         return Menu.objects.filter(user=self.request.user)
@@ -45,3 +54,8 @@ class MenuUpdateView(generic.UpdateView):
         context = super(MenuUpdateView, self).get_context_data(*args, **kwargs)
         context['title'] = 'Update Menu'
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super(MenuUpdateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
