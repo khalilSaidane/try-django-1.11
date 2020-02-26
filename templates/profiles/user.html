@@ -2,28 +2,31 @@
 {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
     <h1>{{ user.username }}</h1>
-        {% if restaurants %}
-            <ul>
-                {% for rest in restaurants %}
-                    <div class="row">
-                        <div>
-                            <div class="thumbnail">
-                                <h3> {{ rest }} </h3>
-                                <p>{{ rest.location }}</p>
-                                <ul>
-                                    {% for menu in rest.menu_set.all %}
-                                        <li><b>{{ menu.name }}</b></li>
-                                        {% for ing in menu.get_contents %}
-                                            <span class="badge badge-default">{{ ing }}</span>
-                                        {% endfor %}
+    {% if restaurants %}
+        <ul>
+            {% for rest in restaurants %}
+                <div class="row">
+                    <div>
+                        <div class="thumbnail">
+                            <h3> {{ rest.name }} </h3>
+                            <h4><a href="{{ request.path }}?q={{ rest.location }}">{{ rest.location }} |</a>
+                                <a href="{{ request.path }}?q={{ rest.category }}">{{ rest.category }} </a>
+                            </h4>
+                            <ul>
+                                {% for menu in rest.menu_set.all %}
+                                    <li><b>{{ menu.name }}</b></li>
+                                    {% for ing in menu.get_contents %}
+                                        <a class="badge badge-primary"
+                                           href="{{ request.path }}?q={{ ing }}">{{ ing }}</a>
                                     {% endfor %}
-                                </ul>
-                            </div>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="lead">No Items Found</p>
+                </div>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="lead">No Items Found</p>
     {% endif %}
 {% endblock %}

@@ -25,11 +25,7 @@ class ProfileDetailView(DetailView):
         user = context['user']
         query = self.request.GET.get('q')
         menu_exists = Menu.objects.filter(user=user).exists()
-        qs = Restaurant.objects.filter(user=user)
-        print(query)
-        if query:
-            qs = qs.filter(name__icontains=query)
-            print(qs.count())
+        qs = Restaurant.objects.filter(user=user).search(query)
         if qs.exists() and menu_exists:
             context['restaurants'] = qs
         return context

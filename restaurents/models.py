@@ -7,6 +7,28 @@ from .utils import unique_slug_generator
 from .validators import validate_name
 from django.conf import settings
 from django.urls import reverse
+from django.db.models import Q
+
+
+class RestaurantQuerySet(models.query.QuerySet):
+    def search(self, query):  # Restaurant.objects.all().search(query)      def search(self, query):  # Restaurant.objects.filter(something).search(query)
+        if query:
+            query = query.strip()
+            return self.filter(Q(name__icontains=query) |
+                               Q(location__icontains=query) |
+                               Q(category__icontains=query) |
+                               Q(menu__name__icontains=query) |
+                               Q(menu__contents__icontains=query)
+                               ).distinct()
+        return self
+
+
+class RestaurantManager(models.Manager):
+    def get_queryset(self):
+        return RestaurantQuerySet(self.model, using=self._db)
+
+    def search(self, query):  # Restaurant.objects.search()
+        return self.get_queryset().search(query)
 
 
 class Restaurant(models.Model):
@@ -17,6 +39,7 @@ class Restaurant(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(blank=True, null=True)
+    objects = RestaurantManager()  # this will add the manager to objects
 
     def __str__(self):
         return self.name
