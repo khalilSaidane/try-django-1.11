@@ -3,10 +3,23 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from .models import Menu
-from django.views import generic
+from django.views import generic, View
 from .forms import MenuForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+
+
+class HomeView(View):
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        if not user.is_authenticated:
+            return render(request, 'home.html')
+        is_following_user_ids = [x.user.id for x in user.is_following.all()]
+        queryset = Menu.objects.filter(user__id__in=is_following_user_ids, is_public=True).order_by("-updated")[:4]
+        context = {
+            'object_list': queryset
+        }
+        return render(request, 'menus/home-feed.html', context)
 
 
 class MenuListView(LoginRequiredMixin,  generic.ListView):

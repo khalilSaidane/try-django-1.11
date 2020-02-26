@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} Home Feed {% endblock %}
+{% block content %}
+    {% for obj in object_list %}
+        <div class="row">
+            <div>
+                <div class="thumbnail">
+                 <h2> {{ obj.user.username }} </h2>
+                    <h3> {{ obj.name }} </h3>
+                    <h4>{{ obj.restaurant.location }} |
+                        {{ obj.restaurant.category }}
+                    </h4>
+                    <ul>
+                        {% for ing in obj.get_contents %}
+                            <a class="badge badge-primary">{{ ing }}</a>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
