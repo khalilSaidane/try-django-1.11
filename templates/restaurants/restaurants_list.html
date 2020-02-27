@@ -13,7 +13,8 @@
                 {{ obj.location }} | {{ obj.category }} | {{ obj.timestamp }} | {{ obj.updated }}</li>
         {% empty %}
             <small>
-                <a href="{% url 'restaurants:create' %}">Add</a>
+               <label>Create your first</label>
+                <a href="{% url 'restaurants:create' %}">here!</a>
             </small>
         {% endfor %}
     </ul>

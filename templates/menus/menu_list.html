@@ -36,8 +36,8 @@
             </li>
         {% empty %}
             <small>
-                <a href="{% url 'menus:create' %}">Add</a>
-            </small>
+                <label>Create your first</label>
+                <a href="{% url 'menus:create' %}">here!</a> </small>
         {% endfor %}
     </ul>
 {% endblock %}

@@ -3,6 +3,7 @@ from django.contrib.auth.views import LoginView, PasswordChangeView, LogoutView 
 from django.views import generic
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import redirect
 
 
 class Register(SuccessMessageMixin,generic.CreateView):
@@ -11,6 +12,12 @@ class Register(SuccessMessageMixin,generic.CreateView):
     success_url = 'accounts/login'
     form_class = UserCreationForm
     success_message = "User %(username)s successfully created"
+
+    # Make sure the user is logged out before he register
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('logout/')
+        return super(Register, self).dispatch(*args, **kwargs)
 
 
 class UserLoginView(SuccessMessageMixin, LoginView):
