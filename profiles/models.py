@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.db.models.signals import post_save
 from django.conf import settings
+from django.urls import reverse
 
 User = settings.AUTH_USER_MODEL
 
@@ -31,6 +32,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_toggle_follow_url(self):
+        return reverse('profiles:follow-api-toggle', kwargs={'username': self.user.username})
 
 
 def post_save_user_receiver(sender, instance, created, *args, **kwargs):

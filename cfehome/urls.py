@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import TemplateView
-from profiles.views import ProfileFollowToggle
 from menus.views import HomeView
 
 urlpatterns = [
@@ -25,9 +24,5 @@ urlpatterns = [
     url(r'^menus/', include('menus.urls', namespace='menus')),
     url(r'^profiles/', include('profiles.urls', namespace='profiles')),
     url(r'^accounts/', include('accounts.urls')),
-    url(r'^about/', TemplateView.as_view(template_name='home/about.html'), name='about'),
-    url(r'^contact/', TemplateView.as_view(template_name='home/contact.html'), name='contact'),
     url(r'^home/', HomeView.as_view(), name='home'),
-    url(r'^follow/', ProfileFollowToggle.as_view(), name='follow'),
-
 ]

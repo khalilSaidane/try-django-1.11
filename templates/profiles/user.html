@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
     <h1>{{ user.username }}</h1>
-    <p>{% include 'profiles/snippet/follow_form.html' with username=user.username is_following=is_following%}</p>
+    <a data-followers="{{ user.profile.followers.count }}" class="btn-follow" href={{ user.profile.get_toggle_follow_url }}>
+       {{ user.profile.followers.count }} Follow</a>
     {% if restaurants %}
         <ul>
             {% for rest in restaurants %}

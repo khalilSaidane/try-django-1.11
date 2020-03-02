@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 
-class HomeView(View):
+class HomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
         if not user.is_authenticated:

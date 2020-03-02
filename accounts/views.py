@@ -13,7 +13,7 @@ class Register(SuccessMessageMixin,generic.CreateView):
     form_class = UserCreationForm
     success_message = "User %(username)s successfully created"
 
-    # Make sure the user is logged out before he register
+    # Make sure the user is logged out before he registera`
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             return redirect('logout/')
