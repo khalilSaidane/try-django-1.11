@@ -7,9 +7,32 @@ class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = [
+            'user',
             'name',
             'slug',
             'location',
             'category',
-            'timestamp'
+        ]
+
+
+class RestaurantRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = [
+            'user',
+            'name',
+            'slug',
+            'location',
+            'category',
+        ]
+
+
+class RestaurantCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = [
+            'user',
+            'name',
+            'location',
+            'category',
         ]
