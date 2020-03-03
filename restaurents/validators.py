@@ -7,4 +7,3 @@ def validate_name(value):
             'We dont like tacos here !!!',
             params={'value': value},
         )
-

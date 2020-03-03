@@ -21,6 +21,7 @@ from menus.views import HomeView
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^restaurants/', include('restaurents.urls', namespace='restaurants')),
+    url(r'^api/restaurants/', include('restaurents.api.urls', namespace='restaurants-api')),
     url(r'^menus/', include('menus.urls', namespace='menus')),
     url(r'^profiles/', include('profiles.urls', namespace='profiles')),
     url(r'^accounts/', include('accounts.urls')),
