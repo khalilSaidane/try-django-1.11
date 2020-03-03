@@ -1,5 +1,5 @@
 from rest_framework import generics
-
+from rest_framework import permissions
 from restaurents.models import Restaurant
 from . import serializers
 
@@ -15,7 +15,7 @@ class RestaurantRetrieveAPIView(generics.RetrieveAPIView):
     lookup_field = 'slug'
 
 
-class RestaurantUpdateAPIView(generics.UpdateAPIView):
+class RestaurantUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = serializers.RestaurantCreateUpdateSerializer
     lookup_field = 'slug'
@@ -30,3 +30,6 @@ class RestaurantDeleteAPIView(generics.DestroyAPIView):
 class RestaurantCreateAPIView(generics.CreateAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = serializers.RestaurantCreateUpdateSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

@@ -31,7 +31,6 @@ class RestaurantCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = [
-            'user',
             'name',
             'location',
             'category',
