@@ -7,11 +7,19 @@ from rest_framework.permissions import (
 from .permissions import IsOwnerOrReadOnly
 from restaurents.models import Restaurant
 from . import serializers
+from rest_framework.filters import OrderingFilter, SearchFilter
 
 
 class RestaurantListAPIView(generics.ListAPIView):
-    queryset = Restaurant.objects.all()
     serializer_class = serializers.RestaurantSerializer
+    filter_backends = [OrderingFilter, SearchFilter]
+    search_fields = ['name', 'category', 'location']
+
+    # This method is not needed we can use the built in filter
+    def get_queryset(self, *args, **kwargs):
+        query = self.request.GET.get('q')
+        queryset = Restaurant.objects.search(query)
+        return queryset
 
 
 class RestaurantRetrieveAPIView(generics.RetrieveAPIView):
