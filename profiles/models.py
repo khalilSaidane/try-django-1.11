@@ -34,7 +34,7 @@ class Profile(models.Model):
         return self.user.username
 
     def get_toggle_follow_url(self):
-        return reverse('profiles:follow-api-toggle', kwargs={'username': self.user.username})
+        return reverse('profiles-api:follow-toggle', kwargs={'username': self.user.username})
 
 
 def post_save_user_receiver(sender, instance, created, *args, **kwargs):

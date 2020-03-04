@@ -1,4 +1,8 @@
-from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField
+from rest_framework.serializers import (
+    ModelSerializer,
+    HyperlinkedIdentityField,
+    SerializerMethodField
+)
 
 from restaurents.models import Restaurant
 
@@ -14,6 +18,7 @@ delete_url = HyperlinkedIdentityField(
 
 class RestaurantListSerializer(ModelSerializer):
     url = retrieve_url
+    user = SerializerMethodField()
 
     class Meta:
         model = Restaurant
@@ -25,9 +30,13 @@ class RestaurantListSerializer(ModelSerializer):
             'category',
         ]
 
+    def get_user(self, obj):
+        return str(obj.user.username)
+
 
 class RestaurantRetrieveSerializer(ModelSerializer):
     delete_url = delete_url
+    user = SerializerMethodField()
 
     class Meta:
         model = Restaurant
@@ -39,6 +48,9 @@ class RestaurantRetrieveSerializer(ModelSerializer):
             'location',
             'category',
         ]
+        
+    def get_user(self, obj):
+        return str(obj.user.username)
 
 
 class RestaurantCreateUpdateSerializer(ModelSerializer):
