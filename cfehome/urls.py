@@ -24,8 +24,8 @@ urlpatterns = [
     url(r'^api/restaurants/', include('restaurents.api.urls', namespace='restaurants-api')),
     url(r'^profiles/', include('profiles.urls', namespace='profiles')),
     url(r'^api/profiles/', include('profiles.api.urls', namespace='profiles-api')),
-    url(r'^accounts/', include('accounts.urls', namespace='accounts-api')),
-    url(r'^api/accounts/', include('accounts.api.urls')),
+    url(r'^accounts/', include('accounts.urls')),
+    url(r'^api/accounts/', include('accounts.api.urls', namespace='accounts-api')),
     url(r'^menus/', include('menus.urls', namespace='menus')),
     url(r'^home/', HomeView.as_view(), name='home'),
 ]
