@@ -9,7 +9,7 @@ class ProfileFollowAPIToggle(APIView):
     authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request,username=None, format=None):
+    def get(self, request, username=None, format=None):
         is_following, profile_ = Profile.objects.toggle_follow(request.user, username)
         data = {
             "is_following": is_following,
