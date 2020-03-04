@@ -12,7 +12,7 @@ from .pagination import RestaurantLimitOffsetPagination, RestaurantPageNumberPag
 
 
 class RestaurantListAPIView(generics.ListAPIView):
-    serializer_class = serializers.RestaurantSerializer
+    serializer_class = serializers.RestaurantListSerializer
     filter_backends = [OrderingFilter, SearchFilter]
     search_fields = ['name', 'category', 'location']
     pagination_class = RestaurantPageNumberPagination
