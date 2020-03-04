@@ -8,12 +8,14 @@ from .permissions import IsOwnerOrReadOnly
 from restaurents.models import Restaurant
 from . import serializers
 from rest_framework.filters import OrderingFilter, SearchFilter
+from .pagination import RestaurantLimitOffsetPagination, RestaurantPageNumberPagination
 
 
 class RestaurantListAPIView(generics.ListAPIView):
     serializer_class = serializers.RestaurantSerializer
     filter_backends = [OrderingFilter, SearchFilter]
     search_fields = ['name', 'category', 'location']
+    pagination_class = RestaurantPageNumberPagination
 
     # This method is not needed we can use the built in filter
     def get_queryset(self, *args, **kwargs):
