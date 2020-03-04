@@ -84,3 +84,11 @@ class UserLoginSerializer(ModelSerializer):
                 raise ValidationError('Incorrect credentials please try again.')
             data['token'] = 'SOME RANDOM TOKEN'
             return data
+
+
+class UserRetrieveSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+        ]

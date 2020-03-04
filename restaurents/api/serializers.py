@@ -5,7 +5,7 @@ from rest_framework.serializers import (
 )
 
 from restaurents.models import Restaurant
-
+from accounts.api.serializers import UserRetrieveSerializer
 retrieve_url = HyperlinkedIdentityField(
        view_name='restaurants-api:detail',
        lookup_field='slug',
@@ -36,7 +36,7 @@ class RestaurantListSerializer(ModelSerializer):
 
 class RestaurantRetrieveSerializer(ModelSerializer):
     delete_url = delete_url
-    user = SerializerMethodField()
+    user = UserRetrieveSerializer(read_only=True)
 
     class Meta:
         model = Restaurant
@@ -48,9 +48,6 @@ class RestaurantRetrieveSerializer(ModelSerializer):
             'location',
             'category',
         ]
-        
-    def get_user(self, obj):
-        return str(obj.user.username)
 
 
 class RestaurantCreateUpdateSerializer(ModelSerializer):
