@@ -6,9 +6,6 @@ from django.db.models.signals import post_save
 from django.conf import settings
 from django.urls import reverse
 
-import django.dispatch
-follow_signal = django.dispatch.Signal(providing_args=["follower"])
-
 User = settings.AUTH_USER_MODEL
 
 
@@ -22,7 +19,6 @@ class ProfileManager(models.Manager):
         else:
             profile_.followers.add(user)
             is_following = True
-            follow_signal.send(sender=self.__class__, follower=user)
         return is_following, profile_
 
 

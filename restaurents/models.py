@@ -32,7 +32,6 @@ class RestaurantManager(models.Manager):
 
     def toggle_like(self, slug, user):
         obj = Restaurant.objects.filter(slug__iexact=slug).first()
-        print(obj)
         updated = False
         liked = False
         if user in obj.likes.all():
