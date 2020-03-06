@@ -9,6 +9,9 @@ from restaurents.models import Restaurant
 from . import serializers
 from rest_framework.filters import OrderingFilter, SearchFilter
 from .pagination import RestaurantLimitOffsetPagination, RestaurantPageNumberPagination
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 class RestaurantListAPIView(generics.ListAPIView):
@@ -50,3 +53,25 @@ class RestaurantCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class RestaurantLikeToggleAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, slug=None, format=None):
+        obj = get_object_or_404(Restaurant, slug=slug)
+        user = request.user
+        updated = False
+        liked = False
+        if user in obj.likes.all():
+            liked = False
+            obj.likes.remove(user)
+        else:
+            liked = True
+            obj.likes.add(user)
+        updated = True
+        data = {
+            "updated": updated,
+            "liked": liked
+        }
+        return Response(data)

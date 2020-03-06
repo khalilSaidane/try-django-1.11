@@ -8,11 +8,12 @@ from django.http import Http404
 from restaurents.models import Restaurant
 from menus.models import Menu
 from .models import Profile
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 User = get_user_model()
 
 
-class ProfileDetailView(DetailView):
+class ProfileDetailView(LoginRequiredMixin, DetailView):
     template_name = 'profiles/user.html'
 
     def get_object(self):

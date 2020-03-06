@@ -3,30 +3,43 @@
 {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
     <h1>{{ user.username }}</h1>
-    <a data-followers="{{ user.profile.followers.count }}" class="btn-follow" href={{ user.profile.get_toggle_follow_url }}>
-       {{ user.profile.followers.count }} Follow</a>
+    <a count="{{ user.profile.followers.count }}" class="btn-follow"
+       href={{ user.profile.get_toggle_follow_url }}>
+        {{ user.profile.followers.count }}
+        {% if request.user in  user.profile.followers.all %}
+            Unfollow
+        {% else %}
+            Follow
+        {% endif %}
+    </a>
     {% if restaurants %}
         <ul>
             {% for rest in restaurants %}
-                <div class="row">
-                    <div>
-                        <div class="thumbnail">
-                            <h3> {{ rest.name }} </h3>
-                            <h4><a href="{{ request.path }}?q={{ rest.location }}">{{ rest.location }} |</a>
-                                <a href="{{ request.path }}?q={{ rest.category }}">{{ rest.category }} </a>
-                            </h4>
-                            <ul>
-                                {% for menu in rest.menu_set.all %}
-                                    <li><b>{{ menu.name }}</b></li>
-                                    {% for ing in menu.get_contents %}
-                                        <a class="badge badge-primary"
-                                           href="{{ request.path }}?q={{ ing }}">{{ ing }}</a>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+
+                <h3> {{ rest.name }} </h3>
+                <h4><a href="{{ request.path }}?q={{ rest.location }}">{{ rest.location }} |</a>
+                    <a href="{{ request.path }}?q={{ rest.category }}">{{ rest.category }} </a>
+                </h4>
+                <ul>
+                    {% for menu in rest.menu_set.all %}
+                        <li><b>{{ menu.name }}</b></li>
+                        {% for ing in menu.get_contents %}
+                            <a class="badge badge-primary"
+                               href="{{ request.path }}?q={{ ing }}">{{ ing }}</a>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+
+                <a count="{{ rest.likes.count }}" class="btn-like"
+                   href={{ rest.get_toggle_like_url }}>
+                    {{ rest.likes.count }}
+                    {% if request.user in rest.likes.all %}
+                        UnLike
+                    {% else %}
+                        Like
+                    {% endif %}
+                </a>
+                <hr>
             {% endfor %}
         </ul>
     {% else %}

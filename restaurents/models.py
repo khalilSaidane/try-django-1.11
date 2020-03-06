@@ -39,6 +39,7 @@ class Restaurant(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(blank=True, null=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='restaurants_likes')
     objects = RestaurantManager()  # this will add the manager to objects
 
     def __str__(self):
@@ -46,6 +47,9 @@ class Restaurant(models.Model):
 
     def get_absolute_url(self):
         return reverse('restaurants:detail', kwargs={'slug': self.slug})
+
+    def get_toggle_like_url(self):
+        return reverse('restaurants-api:toggle-like', kwargs={'slug': self.slug})
 
     @property
     def title(self):
