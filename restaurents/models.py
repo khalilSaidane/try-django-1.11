@@ -30,6 +30,20 @@ class RestaurantManager(models.Manager):
     def search(self, query):  # Restaurant.objects.search()
         return self.get_queryset().search(query)
 
+    def toggle_like(self, slug, user):
+        obj = Restaurant.objects.filter(slug__iexact=slug).first()
+        print(obj)
+        updated = False
+        liked = False
+        if user in obj.likes.all():
+            liked = False
+            obj.likes.remove(user)
+        else:
+            liked = True
+            obj.likes.add(user)
+        updated = True
+        return liked, updated
+
 
 class Restaurant(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)

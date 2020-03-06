@@ -59,19 +59,6 @@ class RestaurantLikeToggleAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug=None, format=None):
-        obj = get_object_or_404(Restaurant, slug=slug)
-        user = request.user
-        updated = False
-        liked = False
-        if user in obj.likes.all():
-            liked = False
-            obj.likes.remove(user)
-        else:
-            liked = True
-            obj.likes.add(user)
-        updated = True
-        data = {
-            "updated": updated,
-            "liked": liked
-        }
+        liked, updated = Restaurant.objects.toggle_like(slug, request.user)
+        data = {'liked': liked, 'updated': updated}
         return Response(data)
