@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^api/profiles/', include('profiles.api.urls', namespace='profiles-api')),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^api/accounts/', include('accounts.api.urls', namespace='accounts-api')),
+    url(r'^api/notifications/', include('notifications.api.urls', namespace='notifications-api')),
     url(r'^menus/', include('menus.urls', namespace='menus')),
     url(r'^home/', HomeView.as_view(), name='home'),
 ]

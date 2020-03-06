@@ -33,6 +33,9 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def get_absolute_url(self):
+        return reverse('profiles:detail', kwargs={'username': self.user.username})
+
     def get_toggle_follow_url(self):
         return reverse('profiles-api:follow-toggle', kwargs={'username': self.user.username})
 

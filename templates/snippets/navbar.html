@@ -7,8 +7,8 @@
             <ul class="nav navbar-nav">
                 <li><a href="{% url 'restaurants:list' %}">Restaurants</a></li>
                 <li><a href="{% url 'menus:list' %}">Menus</a></li>
-             </ul>
-            <form class="navbar-form navbar-left" method="get" >
+            </ul>
+            <form class="navbar-form navbar-left" method="get">
                 <div class="form-group">
                     <input value="{{ request.GET.q }}" name="q" type="text" class="form-control" placeholder="Search">
                 </div>
@@ -22,6 +22,23 @@
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'logout' %}">Logout</a></li>
                             <li><a href="{% url 'change_password' %}">change password</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Notifications<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% for notification in request.user.notifications_target.all %}
+                                <li><p><a href="{{ notification.actor.profile.get_absolute_url }}">{{ notification.actor }}</a>
+                                    {{ notification.verb }} your restaurant
+                                    <a href="{{ notification.content_object.get_absolute_url }}">{{ notification.content_object }}</a>
+                                </p></li>
+                                <hr>
+                            {% empty %}
+                                <li>No new notifications</li>
+                            {% endfor %}
                         </ul>
                     </li>
                 </ul>

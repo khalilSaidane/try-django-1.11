@@ -30,7 +30,7 @@ def notify_on_follow(sender, instance, action, *args, **kwargs):
         actor_id = [id for id in kwargs['pk_set']][0]
         actor = User.objects.get(id=actor_id)
         target = instance.user
-        verb = '{actor} started following you'.format(actor=actor)
+        verb = 'started following'
         notification = Notification(actor=actor, target=target, content_object=instance, verb=verb)
         notification.save()
 
@@ -40,7 +40,7 @@ def notify_on_like(sender, instance, action, *args, **kwargs):
         actor_id = [id for id in kwargs['pk_set']][0]
         actor = User.objects.get(id=actor_id)
         target = instance.user
-        verb = '{actor} liked your restaurant {restaurant}'.format(actor=actor, restaurant=instance.name)
+        verb = 'liked'
         notification = Notification(actor=actor, target=target, content_object=instance, verb=verb)
         notification.save()
 
