@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'accounts',
     'menus',
     'profiles',
-    'rest_framework'
+    'rest_framework',
+    'notifications',
 ]
 
 MIDDLEWARE = [
