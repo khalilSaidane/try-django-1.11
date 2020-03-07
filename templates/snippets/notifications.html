@@ -4,7 +4,8 @@
     <ul class="dropdown-menu">
         {% for notif in request.user.notifications_target.all %}
             <li>
-                <a href="{{ notif.url }}">
+                <a read-url="{{ notif.get_read_notification_url }}" href="{{ notif.url }}" class="notification"
+                   style="color: {% if notif.is_read %}darkgray{% else %}cornflowerblue{% endif %}" >
                     <b>{{ notif.actor }}</b> {{ notif.verb }}, {{ notif.timestamp | timesince }} ago
                 </a>
             </li>
