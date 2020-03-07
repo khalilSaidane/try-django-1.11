@@ -10,7 +10,8 @@ from django.contrib.auth.models import User
 
 class Notification(models.Model):
     actor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='notifications_actor')
-    target = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='notifications_target')
+    target = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING,
+                               related_name='notifications_target')
     # The object that caused the notification
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -18,6 +19,7 @@ class Notification(models.Model):
     verb = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
+    url = models.CharField(max_length=100, null=True)
 
 
 from django.db.models.signals import m2m_changed
@@ -30,8 +32,12 @@ def notify_on_follow(sender, instance, action, *args, **kwargs):
         actor_id = [id for id in kwargs['pk_set']][0]
         actor = User.objects.get(id=actor_id)
         target = instance.user
-        verb = 'started following'
-        notification = Notification(actor=actor, target=target, content_object=instance, verb=verb)
+        verb = 'started following you'
+        try:
+            url = actor.profile.get_absolute_url()
+        except:
+            url = None
+        notification = Notification(actor=actor, target=target, content_object=instance, verb=verb, url=url)
         notification.save()
 
 
@@ -40,8 +46,12 @@ def notify_on_like(sender, instance, action, *args, **kwargs):
         actor_id = [id for id in kwargs['pk_set']][0]
         actor = User.objects.get(id=actor_id)
         target = instance.user
-        verb = 'liked'
-        notification = Notification(actor=actor, target=target, content_object=instance, verb=verb)
+        verb = 'liked your restaurant {restaurant}'.format(restaurant=instance.name)
+        try:
+            url = instance.get_absolute_url()
+        except:
+            url = None
+        notification = Notification(actor=actor, target=target, content_object=instance, verb=verb, url=url)
         notification.save()
 
 
