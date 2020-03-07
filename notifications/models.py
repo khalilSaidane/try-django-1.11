@@ -10,6 +10,26 @@ from django.urls import reverse
 from django.utils import timezone
 
 
+class NotificationManager(models.Manager):
+    def save_notification_or_update_similar(self, notification):
+        '''
+            Make sure that notifications are unique
+            and the timestamp correspond to the last time
+            the event has occurred
+        '''
+        query = Notification.objects.filter(actor=notification.actor, target=notification.target,
+                                            verb=notification.verb,
+                                            url=notification.url)
+        if query.exists():
+            similar = query.first()
+            similar.timestamp = timezone.now()
+            similar.save()
+            return similar
+        else:
+            notification.save()
+            return notification
+
+
 class Notification(models.Model):
     actor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='notifications_actor')
     target = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING,
@@ -22,6 +42,7 @@ class Notification(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
     url = models.CharField(max_length=100, null=True)
+    objects = NotificationManager()
 
     def __str__(self):
         return self.url
@@ -37,22 +58,6 @@ from profiles.models import Profile
 from restaurents.models import Restaurant
 
 
-def set_notification_or_update_similar(notification):
-    '''
-        Make sure that notifications are unique
-        and the timestamp correspond to the last time
-        the event has occurred
-    '''
-    query = Notification.objects.filter(actor=notification.actor, target=notification.target, verb=notification.verb,
-                                        url=notification.url)
-    if query.exists():
-        similar = query.first()
-        similar.timestamp = timezone.now()
-        similar.save()
-    else:
-        notification.save()
-
-
 def notify_on_follow(sender, instance, action, *args, **kwargs):
     if action == 'post_add':
         actor_id = [id for id in kwargs['pk_set']][0]
@@ -65,7 +70,7 @@ def notify_on_follow(sender, instance, action, *args, **kwargs):
             url = None
         # to avoid duplicate notifications
         notification = Notification(actor=actor, target=target, content_object=instance, verb=verb, url=url)
-        set_notification_or_update_similar(notification)
+        Notification.objects.save_notification_or_update_similar(notification)
 
 
 def notify_on_like(sender, instance, action, *args, **kwargs):
@@ -80,7 +85,7 @@ def notify_on_like(sender, instance, action, *args, **kwargs):
             url = None
         # to avoid duplicate notifications
         notification = Notification(actor=actor, target=target, content_object=instance, verb=verb, url=url)
-        set_notification_or_update_similar(notification)
+        Notification.objects.save_notification_or_update_similar(notification)
 
 
 m2m_changed.connect(notify_on_follow, sender=Profile.followers.through)
