@@ -47,10 +47,11 @@ class Notification(models.Model):
     def __str__(self):
         return self.url
 
+    class Meta:
+        ordering = ['-timestamp']
+
     def get_read_notification_url(self):
         return reverse('notifications-api:update', kwargs={'pk': self.id})
-
-
 
 
 from django.db.models.signals import m2m_changed
@@ -58,35 +59,28 @@ from profiles.models import Profile
 from restaurents.models import Restaurant
 
 
-def notify_on_follow(sender, instance, action, *args, **kwargs):
-    if action == 'post_add':
-        actor_id = [id for id in kwargs['pk_set']][0]
-        actor = User.objects.get(id=actor_id)
-        target = instance.user
-        verb = 'started following you'
-        try:
-            url = actor.profile.get_absolute_url()
-        except:
-            url = None
-        # to avoid duplicate notifications
-        notification = Notification(actor=actor, target=target, content_object=instance, verb=verb, url=url)
-        Notification.objects.save_notification_or_update_similar(notification)
+def notify(verb, redirect_to_actor_profile=False):
+    def notify_func(sender, instance, action, *args, **kwargs):
+        if action == 'post_add':
+            actor_id = [id for id in kwargs['pk_set']][0]
+            actor = User.objects.get(id=actor_id)
+            target = instance.user
+            v = verb
+            try:
+                if redirect_to_actor_profile:
+                    url = actor.profile.get_absolute_url()
+                else:
+                    url = instance.get_absolute_url()
+            except:
+                url = None
+            # to avoid duplicate notifications
+            notification = Notification(actor=actor, target=target, content_object=instance, verb=v, url=url)
+            Notification.objects.save_notification_or_update_similar(notification)
+    return notify_func
 
 
-def notify_on_like(sender, instance, action, *args, **kwargs):
-    if action == 'post_add':
-        actor_id = [id for id in kwargs['pk_set']][0]
-        actor = User.objects.get(id=actor_id)
-        target = instance.user
-        verb = 'liked your restaurant {restaurant}'.format(restaurant=instance.name)
-        try:
-            url = instance.get_absolute_url()
-        except:
-            url = None
-        # to avoid duplicate notifications
-        notification = Notification(actor=actor, target=target, content_object=instance, verb=verb, url=url)
-        Notification.objects.save_notification_or_update_similar(notification)
-
+notify_on_follow = notify(verb='stated following you', redirect_to_actor_profile=True)
+notify_on_like = notify(verb='liked your restaurant')
 
 m2m_changed.connect(notify_on_follow, sender=Profile.followers.through)
 m2m_changed.connect(notify_on_like, sender=Restaurant.likes.through)
