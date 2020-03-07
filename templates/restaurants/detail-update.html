@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
-{% block title %}  {{form.instance.name}} {% endblock %}
+{% block title %}  {{ form.instance.name }} {% endblock %}
 {% block content %}
-    <h1>Restaurants Detail</h1>
+    <h1>Restaurants Detail </h1>
+    <input type="button" value="Make changes" class="btn btn-warning" id="make-changes">
     <h2>{{ form.instance.name }} <small>{{ form.instance.category }}</small></h2>
+    <small class="text-info">{{ form.instance.likes.count }} likes</small>
     <p>{{ form.instance.location }}</p>
     <p>{{ form.instance.timestamp }}, updated {{ form.instance.updated | timesince }} ago</p>
-    <hr/>
-    <h3>Make Changes</h3>
-    {% include 'snippets/form-snippet.html' with form=form %}
+    <div class="update-div" hidden="true">
+        <hr/>
+        <h3>Make Changes</h3>
+        {% include 'snippets/form-snippet.html' with form=form %}
+    </div>
 {% endblock %}

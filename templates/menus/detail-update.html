@@ -2,6 +2,7 @@
 {% block title %} {{ form.instance.name }} {% endblock %}
 {% block content %}
     <h1>Menu Detail</h1>
+    <input type="button" value="Make changes" class="btn btn-warning" id="make-changes">
     <h2>{{ form.instance.name }} <small><a
             href="{{ form.instance.restaurant.get_absolute_url }}">{{ form.instance.restaurant }}</a></small></h2>
     {% if form.instance.contents %}
@@ -24,7 +25,9 @@
             {% endfor %}
         </ul>
     {% endif %}    <p>{{ form.instance.timestamp }} updated {{ form.instance.updated | timesince }} ago</p>
-    <hr/>
-    <h3>Make Changes</h3>
-    {% include 'snippets/form-snippet.html' with form=form %}
+    <div class="update-div" hidden="true">
+        <hr/>
+        <h3>Make Changes</h3>
+        {% include 'snippets/form-snippet.html' with form=form %}
+    </div>
 {% endblock %}
