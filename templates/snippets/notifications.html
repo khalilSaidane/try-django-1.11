@@ -1,12 +1,15 @@
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-       aria-expanded="false">Notifications</a>
+       aria-expanded="false">
+        <span class="glyphicon glyphicon-bell" style="color: {% if new_notifications_count %}goldenrod{% endif %}"></span> <b>{{ new_notifications_count }}</b>
+    </a>
     <ul class="dropdown-menu">
-        {% for notif in request.user.notifications_target.all %}
+        {% for notif in notifications %}
             <li>
                 <a read-url="{{ notif.get_read_notification_url }}" href="{{ notif.url }}" class="notification"
-                   style="color: {% if notif.is_read %}darkgray{% else %}cornflowerblue{% endif %}" >
-                    <b>{{ notif.actor }}</b> {{ notif.verb }} {{ notif.content_object }}, <small>{{ notif.timestamp | timesince }} ago </small>
+                   style="color: {% if notif.is_read %}darkgray{% else %}cornflowerblue{% endif %}">
+                    <b>{{ notif.actor }}</b> {{ notif.verb }} {{ notif.content_object }},
+                    <small>{{ notif.timestamp | timesince }} ago </small>
                 </a>
             </li>
         {% empty %}

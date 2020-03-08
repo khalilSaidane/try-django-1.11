@@ -23,6 +23,7 @@ class NotificationManager(models.Manager):
         if query.exists():
             similar = query.first()
             similar.timestamp = timezone.now()
+            similar.is_read = False
             similar.save()
             return similar
         else:

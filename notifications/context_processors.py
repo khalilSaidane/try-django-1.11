@@ -1,0 +1,14 @@
+from .models import Notification
+
+
+def get_notifications(request):
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(target=request.user)
+        new_notifications_count = notifications.filter(is_read=False).count()
+        print(notifications, new_notifications_count)
+        if new_notifications_count > 0:
+            return {'notifications': notifications[:15], 'new_notifications_count': new_notifications_count}
+        else:
+            return {'notifications': notifications}
+    else:
+        return {}
