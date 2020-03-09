@@ -46,7 +46,7 @@ class Notification(models.Model):
     objects = NotificationManager()
 
     def __str__(self):
-        return self.url
+        return str(self.actor) + ' made an action on ' + str(self.content_object) + ' of ' + str(self.target)
 
     class Meta:
         ordering = ['-timestamp']
@@ -66,17 +66,17 @@ def notify(verb, redirect_to_actor_profile=False):
             actor_id = [id for id in kwargs['pk_set']][0]
             actor = User.objects.get(id=actor_id)
             target = instance.user
-            v = verb
-            try:
-                if redirect_to_actor_profile:
-                    url = actor.profile.get_absolute_url()
-                else:
-                    url = instance.get_absolute_url()
-            except:
-                url = None
-            # to avoid duplicate notifications
-            notification = Notification(actor=actor, target=target, content_object=instance, verb=v, url=url)
-            Notification.objects.save_notification_or_update_similar(notification)
+            # example: if i liked my own post no need to notify me
+            if actor != target:
+                try:
+                    if redirect_to_actor_profile:
+                        url = actor.profile.get_absolute_url()
+                    else:
+                        url = instance.get_absolute_url()
+                except:
+                    url = None
+                notification = Notification(actor=actor, target=target, content_object=instance, verb=verb, url=url)
+                Notification.objects.save_notification_or_update_similar(notification)
     return notify_func
 
 
